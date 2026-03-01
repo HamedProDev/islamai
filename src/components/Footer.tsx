@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+
 
 const Footer = () => (
   <footer className="bg-primary text-primary-foreground py-10 islamic-pattern-bg">

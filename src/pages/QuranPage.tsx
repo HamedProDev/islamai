@@ -61,9 +61,6 @@ const QuranPage = () => {
     audio.play();
     audio.onended = () => {
       setPlayingAyah(null);
-      // Auto-play next
-      const nextIdx = ayahs.findIndex((a) => a.numberInSurah === ayah.numberInSurah) + 1;
-      if (nextIdx < ayahs.length) playAyah(ayahs[nextIdx]);
     };
   };
 

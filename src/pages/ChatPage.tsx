@@ -32,7 +32,7 @@ function findResponse(question: string): string {
   for (const [key, value] of Object.entries(KNOWLEDGE)) {
     if (q.includes(key)) return value;
   }
-  return "JazakAllah Khair for your question! 🤲\n\nThis is a great question that I'd love to answer in more detail. For a comprehensive AI-powered response, the full AI assistant will be available soon with Lovable Cloud integration.\n\nIn the meantime, I recommend consulting:\n- **IslamQA.info** for detailed scholarly answers\n- **Quran.com** for Quranic references\n- Your local mosque or Imam for personalized guidance\n\n*Remember: Always verify any information with qualified Islamic scholars.*";
+  return "JazakAllah Khair for your question! 🤲\n\nThis is a great question that I'd love to answer in more detail. For a comprehensive AI-powered response, the full AI assistant will be available soon insha'Allah. 🌟\n\nIn the meantime, I recommend consulting:\n📖 IslamQA.info for detailed scholarly answers\n🕌 Quran.com for Quranic references\n🤝 Your local mosque or Imam for personalized guidance\n\n⚠️ Remember: Always verify any information with qualified Islamic scholars.";
 }
 
 const ChatPage = () => {

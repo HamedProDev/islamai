@@ -22,6 +22,12 @@ export const RECITERS = [
   { id: "ar.alafasy", name: "Mishary Rashid Alafasy", identifier: "ar.alafasy" },
   { id: "ar.abdurrahmaansudais", name: "Abdul Rahman Al-Sudais", identifier: "ar.abdurrahmaansudais" },
   { id: "ar.hanirifai", name: "Hani Ar-Rifai", identifier: "ar.hanirifai" },
+  { id: "ar.husary", name: "Mahmoud Khalil Al-Husary", identifier: "ar.husary" },
+  { id: "ar.mahermuaiqly", name: "Maher Al-Muaiqly", identifier: "ar.mahermuaiqly" },
+  { id: "ar.minshawi", name: "Mohamed Siddiq El-Minshawi", identifier: "ar.minshawi" },
+  { id: "ar.abdulbasitmurattal", name: "Abdul Basit (Murattal)", identifier: "ar.abdulbasitmurattal" },
+  { id: "ar.saaboris", name: "Saad Al-Ghamdi", identifier: "ar.saoodshuraym" },
+  { id: "ar.shaatree", name: "Abu Bakr Al-Shatri", identifier: "ar.shaatree" },
 ];
 
 const API_BASE = "https://api.alquran.cloud/v1";

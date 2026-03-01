@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import DonationPopup from "./components/DonationPopup";
 import Index from "./pages/Index";
 import QuranPage from "./pages/QuranPage";
 import ChatPage from "./pages/ChatPage";
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
+        <DonationPopup />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

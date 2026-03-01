@@ -6,8 +6,8 @@ const DonatePage = () => {
   const handleDonate = (amount?: number) => {
     // PayPal donation link placeholder — replace with actual PayPal.me link or button ID
     const paypalUrl = amount
-      ? `https://www.paypal.com/donate?amount=${amount}&currency_code=USD`
-      : "https://www.paypal.com/donate";
+      ? `https://www.paypal.com/donate?business=husseinfatu111@gmail.com&amount=${amount}&currency_code=USD`
+      : "https://www.paypal.com/donate?business=husseinfatu111@gmail.com";
     window.open(paypalUrl, "_blank");
   };
 

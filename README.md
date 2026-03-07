@@ -1,73 +1,56 @@
-# Welcome to your Lovable project
+# Quran AI by Halal Production
 
-## Project info
+**Serving the Ummah with Knowledge and Guidance**
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
 
-## How can I edit this code?
+## 📖 Overview
 
-There are several ways of editing your application.
+Quran AI is an intelligent assistant designed to help users explore the Holy Quran, gain insights, and deepen their understanding of Islamic teachings. Developed by **Halal Production**, this tool aims to make Quranic knowledge more accessible to the global Ummah.
 
-**Use Lovable**
+## ✨ Features
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **AI-Powered Quranic Assistance**: Ask questions and receive responses based on Quranic knowledge.
+- **User-Friendly Interface**: Built with modern web technologies for a seamless experience.
+- **Accessible Anywhere**: Available online via [islamai.lovable.app/quran](https://islamai.lovable.app/quran).
 
-Changes made via Lovable will be committed automatically to this repo.
+## ⚠️ Important Disclaimer
 
-**Use your preferred IDE**
+> AI responses should be verified with qualified Islamic scholars. This tool is meant to assist, not replace scholarly guidance.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 📬 Contact
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+For inquiries, feedback, or collaborations, please reach out to:  
+**Hamed Hussein** – [hamedbinhussein0@gmail.com](mailto:hamedbinhussein0@gmail.com)
 
-Follow these steps:
+## 🛠️ Technologies Used
+
+This project is built with modern web technologies to ensure performance, accessibility, and ease of use. The tech stack includes:
+
+- **Vite** - Next Generation Frontend Tooling
+- **TypeScript** - JavaScript with syntax for types
+- **React** - A JavaScript library for building user interfaces
+- **shadcn-ui** - Re-usable components built with Radix UI and Tailwind CSS
+- **Tailwind CSS** - A utility-first CSS framework
+
+## 🚀 Getting Started (For Developers)
+
+If you want to run this project locally or contribute to its development, follow these steps:
+
+### Prerequisites
+- Node.js & npm installed ([install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
+
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# Navigate to the project directory
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
+# Install dependencies
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)

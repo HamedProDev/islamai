@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Send, Bot, User, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import ReactMarkdown from "react-markdown";
+import { toast } from "sonner";
 
 interface Message {
   role: "user" | "assistant";
@@ -16,29 +18,99 @@ const SUGGESTED = [
   "What does the Quran say about patience?",
 ];
 
-// Simple pre-programmed responses for common questions
-const KNOWLEDGE: Record<string, string> = {
-  "pillars": "The 5 Pillars of Islam are:\n\n1. Shahada 🕌 — Declaration of faith: There is no god but Allah, and Muhammad is His Messenger\n2. Salah 🤲 — Performing the 5 daily prayers\n3. Zakat 💰 — Giving 2.5% of savings to charity annually\n4. Sawm 🌙 — Fasting during Ramadan from dawn to sunset\n5. Hajj 🕋 — Pilgrimage to Mecca at least once in a lifetime if able\n\nThese are the foundational acts of worship that every Muslim strives to uphold. ✨",
-  "wudu": "Wudu (Ablution) 💧 is the Islamic cleansing ritual performed before prayer:\n\n1. Make the intention (niyyah) in your heart ❤️\n2. Say Bismillah (In the name of Allah)\n3. Wash both hands up to the wrists 3 times\n4. Rinse the mouth 3 times\n5. Clean the nose 3 times\n6. Wash the face 3 times\n7. Wash both arms up to the elbows 3 times (right first)\n8. Wipe the head once with wet hands\n9. Wipe the ears once\n10. Wash both feet up to the ankles 3 times (right first)\n\nWudu is invalidated by using the restroom, passing gas, deep sleep, or bleeding. 🤲",
-  "muhammad": "Prophet Muhammad ﷺ (570–632 CE) is the final messenger of Allah and the seal of the prophets. 🌟\n\n🕌 Born in Mecca to the Quraysh tribe\n📖 Received his first revelation at age 40 in the Cave of Hira\n🌙 The Quran was revealed to him over 23 years through Angel Jibreel\n🐪 He migrated from Mecca to Medina (the Hijra) in 622 CE\n💚 He is known for his exemplary character, mercy, and justice\n📚 His sayings and actions (Hadith & Sunnah) form a major source of Islamic guidance\n\nMuslims say ﷺ (peace be upon him) after his name out of respect. 🤲",
-  "patience": "The Quran speaks extensively about Patience (Sabr) 🤲:\n\n📖 Indeed, Allah is with the patient. — Quran 2:153\n\n📖 And be patient, for indeed, Allah does not allow to be lost the reward of those who do good. — Quran 11:115\n\n📖 So verily, with hardship, there is ease. Verily, with hardship, there is ease. — Quran 94:5-6\n\nPatience in Islam encompasses:\n🕌 Sabr in obedience — persisting in worship\n💪 Sabr in adversity — enduring trials with faith\n🚫 Sabr from sin — restraining from what is forbidden\n\nIt is one of the most praised qualities in the Quran. ✨",
-  "prayer": "Salah (Prayer) 🕌 is the second pillar of Islam. Muslims pray 5 times daily:\n\n🌅 Fajr — Dawn prayer (2 rakahs)\n☀️ Dhuhr — Midday prayer (4 rakahs)\n🌤️ Asr — Afternoon prayer (4 rakahs)\n🌅 Maghrib — Sunset prayer (3 rakahs)\n🌙 Isha — Night prayer (4 rakahs)\n\nPrayer involves standing, bowing (ruku), and prostrating (sujud) while reciting Quranic verses. It is preceded by Wudu (ablution) and facing the Qiblah (direction of the Kabah in Mecca). 🤲",
-  "halal": "Halal & Haram guidance in Islam 📖:\n\n✅ Halal (Permissible):\n🥗 Most fruits, vegetables, grains\n🥩 Meat slaughtered with Bismillah (Zabiha)\n🐟 Fish and seafood (most scholars agree)\n💼 Lawful earnings and trade\n\n❌ Haram (Forbidden):\n🐷 Pork and its by-products\n🍷 Alcohol and intoxicants\n🥩 Meat not slaughtered in Allahs name\n🩸 Blood\n💸 Interest (Riba) in financial dealings\n🎰 Gambling\n\nWhen in doubt, consult a knowledgeable scholar. The Prophet ﷺ said: Leave that which makes you doubt for that which does not make you doubt. 🤲",
-  "ramadan": "Ramadan 🌙 is the 9th month of the Islamic calendar, during which Muslims fast from dawn (Fajr) to sunset (Maghrib).\n\n📖 Key aspects:\n🍽️ Fasting (Sawm) from food, drink, and other needs\n🤲 Increased prayer, especially Taraweeh at night\n📚 Reading and reflecting on the Quran\n💰 Charity and generosity\n✨ Laylatul Qadr (Night of Power) in the last 10 nights\n\n📖 The month of Ramadan in which the Quran was revealed, a guidance for mankind. — Quran 2:185\n\nFasting teaches self-discipline, empathy for the less fortunate, and spiritual growth. 🤲",
-};
+const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
-function findResponse(question: string): string {
-  const q = question.toLowerCase();
-  for (const [key, value] of Object.entries(KNOWLEDGE)) {
-    if (q.includes(key)) return value;
+async function streamChat({
+  messages,
+  onDelta,
+  onDone,
+  onError,
+}: {
+  messages: Message[];
+  onDelta: (text: string) => void;
+  onDone: () => void;
+  onError: (err: string) => void;
+}) {
+  const resp = await fetch(CHAT_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+    },
+    body: JSON.stringify({ messages }),
+  });
+
+  if (!resp.ok) {
+    const data = await resp.json().catch(() => ({}));
+    onError(data.error || "Something went wrong. Please try again.");
+    return;
   }
-  return "JazakAllah Khair for your question! 🤲\n\nThis is a great question that I'd love to answer in more detail. For a comprehensive AI-powered response, the full AI assistant will be available soon insha'Allah. 🌟\n\nIn the meantime, I recommend consulting:\n📖 IslamQA.info for detailed scholarly answers\n🕌 Quran.com for Quranic references\n🤝 Your local mosque or Imam for personalized guidance\n\n⚠️ Remember: Always verify any information with qualified Islamic scholars.";
+
+  if (!resp.body) {
+    onError("No response received.");
+    return;
+  }
+
+  const reader = resp.body.getReader();
+  const decoder = new TextDecoder();
+  let textBuffer = "";
+  let streamDone = false;
+
+  while (!streamDone) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    textBuffer += decoder.decode(value, { stream: true });
+
+    let newlineIndex: number;
+    while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+      let line = textBuffer.slice(0, newlineIndex);
+      textBuffer = textBuffer.slice(newlineIndex + 1);
+
+      if (line.endsWith("\r")) line = line.slice(0, -1);
+      if (line.startsWith(":") || line.trim() === "") continue;
+      if (!line.startsWith("data: ")) continue;
+
+      const jsonStr = line.slice(6).trim();
+      if (jsonStr === "[DONE]") {
+        streamDone = true;
+        break;
+      }
+
+      try {
+        const parsed = JSON.parse(jsonStr);
+        const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+        if (content) onDelta(content);
+      } catch {
+        textBuffer = line + "\n" + textBuffer;
+        break;
+      }
+    }
+  }
+
+  // Final flush
+  if (textBuffer.trim()) {
+    for (let raw of textBuffer.split("\n")) {
+      if (!raw) continue;
+      if (raw.endsWith("\r")) raw = raw.slice(0, -1);
+      if (raw.startsWith(":") || raw.trim() === "") continue;
+      if (!raw.startsWith("data: ")) continue;
+      const jsonStr = raw.slice(6).trim();
+      if (jsonStr === "[DONE]") continue;
+      try {
+        const parsed = JSON.parse(jsonStr);
+        const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+        if (content) onDelta(content);
+      } catch { /* ignore */ }
+    }
+  }
+
+  onDone();
 }
 
 const ChatPage = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,18 +118,41 @@ const ChatPage = () => {
   }, [messages]);
 
   const sendMessage = async (text: string) => {
-    if (!text.trim()) return;
+    if (!text.trim() || isLoading) return;
     const userMsg: Message = { role: "user", content: text.trim() };
-    setMessages((prev) => [...prev, userMsg]);
+    const allMessages = [...messages, userMsg];
+    setMessages(allMessages);
     setInput("");
-    setIsTyping(true);
+    setIsLoading(true);
 
-    // Simulate thinking delay
-    await new Promise((r) => setTimeout(r, 800 + Math.random() * 700));
+    let assistantSoFar = "";
 
-    const response = findResponse(text);
-    setMessages((prev) => [...prev, { role: "assistant", content: response }]);
-    setIsTyping(false);
+    const upsertAssistant = (chunk: string) => {
+      assistantSoFar += chunk;
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last?.role === "assistant") {
+          return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: assistantSoFar } : m));
+        }
+        return [...prev, { role: "assistant", content: assistantSoFar }];
+      });
+    };
+
+    try {
+      await streamChat({
+        messages: allMessages,
+        onDelta: (chunk) => upsertAssistant(chunk),
+        onDone: () => setIsLoading(false),
+        onError: (err) => {
+          toast.error(err);
+          setIsLoading(false);
+        },
+      });
+    } catch (e) {
+      console.error(e);
+      toast.error("Failed to connect to AI. Please try again.");
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -70,7 +165,7 @@ const ChatPage = () => {
           </div>
           <div>
             <h1 className="font-display text-lg font-bold text-card-foreground">Islamic AI Assistant</h1>
-            <p className="text-xs text-muted-foreground">Ask questions about Islam, Quran, and Islamic practices</p>
+            <p className="text-xs text-muted-foreground">Powered by AI — Ask about Islam, Quran & Islamic practices</p>
           </div>
         </div>
       </div>
@@ -109,13 +204,19 @@ const ChatPage = () => {
                 </div>
               )}
               <div
-                className={`max-w-[80%] p-4 rounded-xl text-sm leading-relaxed whitespace-pre-line ${
+                className={`max-w-[80%] p-4 rounded-xl text-sm leading-relaxed ${
                   msg.role === "user"
                     ? "bg-primary text-primary-foreground rounded-br-sm"
                     : "bg-card border border-border text-card-foreground rounded-bl-sm"
                 }`}
               >
-                {msg.content}
+                {msg.role === "assistant" ? (
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  </div>
+                ) : (
+                  <span className="whitespace-pre-line">{msg.content}</span>
+                )}
               </div>
               {msg.role === "user" && (
                 <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0 mt-1">
@@ -125,7 +226,7 @@ const ChatPage = () => {
             </motion.div>
           ))}
 
-          {isTyping && (
+          {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
             <div className="flex gap-3">
               <div className="w-8 h-8 rounded-full gold-gradient flex items-center justify-center shrink-0">
                 <Bot className="w-4 h-4 text-primary" />
@@ -153,14 +254,14 @@ const ChatPage = () => {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about Islam, Quran, prayer..."
             className="flex-1"
-            disabled={isTyping}
+            disabled={isLoading}
           />
-          <Button type="submit" disabled={!input.trim() || isTyping} className="gold-gradient text-primary border-0">
+          <Button type="submit" disabled={!input.trim() || isLoading} className="gold-gradient text-primary border-0">
             <Send className="w-4 h-4" />
           </Button>
         </form>
         <p className="container mx-auto max-w-3xl text-xs text-muted-foreground mt-2 text-center">
-          Responses should be verified with qualified Islamic scholars
+          ⚠️ AI responses should be verified with qualified Islamic scholars
         </p>
       </div>
     </div>

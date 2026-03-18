@@ -141,3 +141,7 @@
     line-height: 2.2;
   }
 }
+
+#lovable-badge {
+  display: none !important;
+}
